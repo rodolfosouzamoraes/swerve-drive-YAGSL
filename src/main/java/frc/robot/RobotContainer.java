@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.StadiaController.Button;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -19,10 +20,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Arm.ArmMoveManualUpCmd;
 import frc.robot.commands.Intake.IntakeCollectCmd;
 import frc.robot.commands.Intake.IntakeShooterCmd;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
@@ -30,18 +33,21 @@ public class RobotContainer {
   private final SwerveSubsystem _drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"swerve"));
   
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
+  private final ArmSubsystem _armSubsystem = new ArmSubsystem();
                                                                          
-
-
-
   private final XboxController _driverXbox = new XboxController(0);
-  private final XboxController _intakeXbox = new XboxController(1);
+  private final XboxController _armIntakeXbox = new XboxController(1);
 
   public RobotContainer() {
     configureBindings();
 
     configureSwerve();
     configureIntake();
+    configureArm();
+  }
+
+  private void configureArm(){
+    _armSubsystem.setDefaultCommand(new InstantCommand(() -> _armSubsystem.stopArm(), _armSubsystem));
   }
 
   private void configureSwerve(){
@@ -59,14 +65,20 @@ public class RobotContainer {
 
   private void configureBindings() {
     initializeIntakeXboxController();
+    initializeArmXboxController();
   }
 
   private void initializeIntakeXboxController(){
-    Trigger shooterNote = new Trigger(() -> Math.abs(_intakeXbox.getRightTriggerAxis())>0.1);
+    Trigger shooterNote = new Trigger(() -> Math.abs(_armIntakeXbox.getRightTriggerAxis())>0.1);
     shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem));
 
-    JoystickButton collectNote = new JoystickButton(_intakeXbox,Button.kA.value);
+    JoystickButton collectNote = new JoystickButton(_armIntakeXbox,Button.kA.value);
     collectNote.whileTrue(new IntakeCollectCmd(_intakeSubsystem));
+  }
+
+  private void initializeArmXboxController(){
+    JoystickButton armMoveUp = new JoystickButton(_armIntakeXbox,Button.kX.value);
+    armMoveUp.whileTrue(new ArmMoveManualUpCmd(_armSubsystem));
   }
 
   public Command getAutonomousCommand() {
@@ -74,7 +86,7 @@ public class RobotContainer {
   }
 
   public void setDriveMode() {
-    //drivebase.setDefaultCommand();
+
   }
 
   public void setMotorBrake(boolean brake) {

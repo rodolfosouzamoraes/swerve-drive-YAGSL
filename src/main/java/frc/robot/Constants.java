@@ -59,4 +59,11 @@ public final class Constants
 
     public static final int kIrSensorCollect = 0;
   }
+
+  public static class ArmConstants {
+    public static final int kLeftMotorLeader = 15;
+    public static final int kLeftMotor = 14;
+    public static final int kRightMotorLeader = 17;
+    public static final int kRightMotor = 16;
+  }
 }
