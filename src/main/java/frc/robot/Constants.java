@@ -50,4 +50,11 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
   }
+
+  public static class IntakeConstants {
+    public static final int kLeftMotorShooter = 20;
+    public static final int kRightMotorShooter = 18;
+    public static final int kLeftMotorCollect = 21;
+    public static final int kRightMotorCollect = 19;
+  }
 }
