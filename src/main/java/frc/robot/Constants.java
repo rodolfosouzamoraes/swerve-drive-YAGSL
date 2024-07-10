@@ -56,5 +56,7 @@ public final class Constants
     public static final int kRightMotorShooter = 18;
     public static final int kLeftMotorCollect = 21;
     public static final int kRightMotorCollect = 19;
+
+    public static final int kIrSensorCollect = 0;
   }
 }

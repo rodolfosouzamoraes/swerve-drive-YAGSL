@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,8 +18,19 @@ public class IntakeSubsystem extends SubsystemBase {
   private CANSparkMax rightMotorShooter;
   private CANSparkMax leftMotorCollect;
   private CANSparkMax rightMotorCollect;
+
+  private DigitalInput sensorCollect;
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
+    configureMotors();
+    configureSensor();
+  }
+
+  private void configureSensor(){
+    sensorCollect = new DigitalInput(Constants.IntakeConstants.kIrSensorCollect);
+  }
+
+  private void configureMotors(){
     leftMotorShooter = new CANSparkMax(Constants.IntakeConstants.kLeftMotorShooter, MotorType.kBrushless);
     leftMotorShooter.restoreFactoryDefaults();
     leftMotorShooter.setInverted(true);
@@ -54,7 +67,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Sensor Collect", sensorCollect.get());
   }
 
   public void shooterNote(double value){
@@ -65,6 +78,14 @@ public class IntakeSubsystem extends SubsystemBase {
   public void collectNote(double value){
     leftMotorCollect.set(value);
     rightMotorCollect.set(value);
+    //if(getSensorCollect() == false){
+      
+    //}
+    //else{
+    //  leftMotorCollect.set(0);
+    //  rightMotorCollect.set(0);
+    //}
+    
   }
 
   public void stopIntake(){
@@ -72,5 +93,9 @@ public class IntakeSubsystem extends SubsystemBase {
     leftMotorShooter.stopMotor();
     rightMotorCollect.stopMotor();
     rightMotorShooter.stopMotor();
+  }
+
+  public Boolean getSensorCollect(){
+    return sensorCollect.get();
   }
 }
