@@ -23,7 +23,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.ArmMoveManualUpCmd;
 import frc.robot.commands.Arm.ArmPositionCmd;
 import frc.robot.commands.Intake.IntakeCollectCmd;
-import frc.robot.commands.Intake.IntakeShooterAmpCmd;
 import frc.robot.commands.Intake.IntakeShooterCmd;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
@@ -75,10 +74,10 @@ public class RobotContainer {
 
   private void initializeIntakeXboxController(){
     Trigger shooterNote = new Trigger(() -> Math.abs(_armIntakeXbox.getRightTriggerAxis())>0.1);
-    shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem));
+    shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem,1));
 
     Trigger shooterAmp = new Trigger(() -> Math.abs(_armIntakeXbox.getLeftTriggerAxis())>0.1);
-    shooterAmp.whileTrue(new IntakeShooterAmpCmd(_intakeSubsystem));
+    shooterAmp.whileTrue(new IntakeShooterCmd(_intakeSubsystem,0.5));
 
     JoystickButton collectNote = new JoystickButton(_armIntakeXbox,Button.kA.value);
     collectNote.whileTrue(new IntakeCollectCmd(_intakeSubsystem));

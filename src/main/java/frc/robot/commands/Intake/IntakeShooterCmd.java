@@ -11,15 +11,17 @@ import frc.robot.subsystems.Intake.IntakeSubsystem;
 public class IntakeShooterCmd extends Command {
   private final Timer _timer;
   private final IntakeSubsystem _intakeSubsystem;
+  private double _speedShooter;
   private double _timerWait = 0.75;
   private double _timerShooter = 0;
   private double _timerFinishShooter = 0;
   private double _timerWaitFinish = 0.5;
   private boolean _isShooter = false;
 
-  public IntakeShooterCmd(IntakeSubsystem intakeSubsystem) {
+  public IntakeShooterCmd(IntakeSubsystem intakeSubsystem, double speedShooter) {
     _intakeSubsystem = intakeSubsystem;
     _timer = new Timer();
+    _speedShooter = speedShooter;
     addRequirements(intakeSubsystem);
   }
 
@@ -39,16 +41,13 @@ public class IntakeShooterCmd extends Command {
       _intakeSubsystem.stopIntake();
       return;
     }
-    _intakeSubsystem.shooterNote(1);
+    _intakeSubsystem.shooterNote(_speedShooter);
     if(_timerShooter < _timer.get()){
       _intakeSubsystem.pushNote(0.3);
       if(_timerFinishShooter < _timer.get()){
         _isShooter = true;
       }
     }
-    //_timer.delay(0.75);
-    //_intakeSubsystem.pushNote(0.3);
-    //_timer.delay(0.5);
   }
 
   // Called once the command ends or is interrupted.
