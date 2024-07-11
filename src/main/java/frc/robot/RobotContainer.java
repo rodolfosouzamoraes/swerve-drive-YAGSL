@@ -23,6 +23,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.ArmMoveManualUpCmd;
 import frc.robot.commands.Arm.ArmPositionCmd;
 import frc.robot.commands.Intake.IntakeCollectCmd;
+import frc.robot.commands.Intake.IntakeShooterAmpCmd;
 import frc.robot.commands.Intake.IntakeShooterCmd;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
@@ -69,12 +70,15 @@ public class RobotContainer {
   private void configureBindings() {
     initializeIntakeXboxController();
     initializeArmXboxController();
-    initializeArmToPosition30XboxController();
+    initializeArmToPositionXboxController();
   }
 
   private void initializeIntakeXboxController(){
     Trigger shooterNote = new Trigger(() -> Math.abs(_armIntakeXbox.getRightTriggerAxis())>0.1);
     shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem));
+
+    Trigger shooterAmp = new Trigger(() -> Math.abs(_armIntakeXbox.getLeftTriggerAxis())>0.1);
+    shooterAmp.whileTrue(new IntakeShooterAmpCmd(_intakeSubsystem));
 
     JoystickButton collectNote = new JoystickButton(_armIntakeXbox,Button.kA.value);
     collectNote.whileTrue(new IntakeCollectCmd(_intakeSubsystem));
@@ -85,18 +89,18 @@ public class RobotContainer {
     //armMoveUp.whileTrue(new ArmMoveManualUpCmd(_armSubsystem));
   }
 
-  private void initializeArmToPosition30XboxController(){
+  private void initializeArmToPositionXboxController(){
     //JoystickButton armMoveArmToPosition = new JoystickButton(_armIntakeXbox,Button.kB.value);
     //armMoveArmToPosition.onTrue(new ArmPositionCmd(_armSubsystem,30,0.6)
     //.withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf));
     JoystickButton armMoveArmTo20Position = new JoystickButton(_armIntakeXbox,Button.kB.value);
-    armMoveArmTo20Position.onTrue(new ArmPositionCmd(_armPidSubsystem,20,1));
+    armMoveArmTo20Position.onTrue(new ArmPositionCmd(_armPidSubsystem,15,1));
 
     JoystickButton armMoveArmTo5Position = new JoystickButton(_armIntakeXbox,Button.kX.value);
     armMoveArmTo5Position.onTrue(new ArmPositionCmd(_armPidSubsystem,5,1));
 
     JoystickButton armMoveArmTo30Position = new JoystickButton(_armIntakeXbox,Button.kY.value);
-    armMoveArmTo30Position.onTrue(new ArmPositionCmd(_armPidSubsystem,40,1));
+    armMoveArmTo30Position.onTrue(new ArmPositionCmd(_armPidSubsystem,30,1));
 
     JoystickButton armMoveToDownPosition = new JoystickButton(_armIntakeXbox,Button.kRightBumper.value);
     armMoveToDownPosition.onTrue(new InstantCommand(() -> _armPidSubsystem.stopFeeder(),_armPidSubsystem));

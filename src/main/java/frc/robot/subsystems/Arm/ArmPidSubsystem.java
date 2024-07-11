@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
@@ -25,13 +26,14 @@ public class ArmPidSubsystem extends PIDSubsystem {
   private final SimpleMotorFeedforward _shooterFeedforward =
       new SimpleMotorFeedforward(
           Constants.ArmConstants.kSVolts, Constants.ArmConstants.kVVoltSecondsPerRotation);
+  private final ArmFeedforward _armFeedForward = new ArmFeedforward(0,0.49,1.95,0.11);
   /** Creates a new ArmPidSubsystem. */
   public ArmPidSubsystem() {
     super(new PIDController(Constants.ArmConstants.kP, Constants.ArmConstants.kI, Constants.ArmConstants.kD));
     getController().setTolerance(Constants.ArmConstants.kShooterToleranceRPS);
     _encoder.setDistancePerPulse(Constants.ArmConstants.kEncoderDistancePerPulse);
     setSetpoint(5);
-    m_controller.setIZone(2);
+    m_controller.setIZone(0);
     m_controller.reset();
 
     leftMotorLeader = new CANSparkMax(Constants.ArmConstants.kLeftMotorLeader, MotorType.kBrushless);
@@ -73,8 +75,8 @@ public class ArmPidSubsystem extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
     setSetpoint(setpoint);
-    leftMotorLeader.setVoltage(m_controller.calculate(getDistance(),setpoint)+_shooterFeedforward.calculate(setpoint));
-    rightMotorLeader.setVoltage(m_controller.calculate(getDistance(),setpoint)+_shooterFeedforward.calculate(setpoint));  
+    leftMotorLeader.setVoltage(m_controller.calculate(getDistance(),setpoint)+_armFeedForward.calculate(setpoint,0.5));
+    rightMotorLeader.setVoltage(m_controller.calculate(getDistance(),setpoint)+_armFeedForward.calculate(setpoint,0.5));  
   }
 
   @Override

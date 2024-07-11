@@ -8,47 +8,28 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 
-public class IntakeShooterCmd extends Command {
+public class IntakeShooterAmpCmd extends Command {
   private final Timer _timer;
   private final IntakeSubsystem _intakeSubsystem;
-  private double _timerWait = 0.75;
-  private double _timerShooter = 0;
-  private double _timerFinishShooter = 0;
-  private double _timerWaitFinish = 0.5;
-  private boolean _isShooter = false;
-
-  public IntakeShooterCmd(IntakeSubsystem intakeSubsystem) {
+  /** Creates a new IntakeShooterAmpCmd. */
+  public IntakeShooterAmpCmd(IntakeSubsystem intakeSubsystem) {
     _intakeSubsystem = intakeSubsystem;
     _timer = new Timer();
     addRequirements(intakeSubsystem);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    _timer.restart();
-    _timerShooter = _timer.get() + _timerWait;
-    _timerFinishShooter = _timerShooter + _timerWaitFinish;
-    _isShooter = false;
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(_isShooter == true){
-      _intakeSubsystem.stopIntake();
-      return;
-    }
-    _intakeSubsystem.shooterNote(1);
-    if(_timerShooter < _timer.get()){
-      _intakeSubsystem.pushNote(0.3);
-      if(_timerFinishShooter < _timer.get()){
-        _isShooter = true;
-      }
-    }
-    //_timer.delay(0.75);
-    //_intakeSubsystem.pushNote(0.3);
-    //_timer.delay(0.5);
+    _intakeSubsystem.shooterNote(0.5);
+    _timer.delay(0.75);
+    _intakeSubsystem.pushNote(0.3);
+    _timer.delay(0.5);
   }
 
   // Called once the command ends or is interrupted.

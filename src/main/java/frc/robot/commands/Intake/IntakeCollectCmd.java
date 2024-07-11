@@ -27,7 +27,7 @@ public class IntakeCollectCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _intakeSubsystem.collectNote(0.3);
+    _intakeSubsystem.collectNote(0.2);
   }
 
   // Called once the command ends or is interrupted.

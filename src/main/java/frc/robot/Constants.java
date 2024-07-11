@@ -85,9 +85,9 @@ public final class Constants
     public static final double kShooterToleranceRPS = 2;//50;
 
     // These are not real PID gains, and will have to be tuned for your specific robot.
-    public static final double kP = 0.3;//1;
-    public static final double kI = 0.2;
-    public static final double kD = 0.08;
+    public static final double kP = 0.1;//1;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
 
     // On a real robot the feedforward constants should be empirically determined; these are
     // reasonable guesses.
