@@ -21,10 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.ArmMoveManualUpCmd;
+import frc.robot.commands.Arm.ArmPositionCmd;
 import frc.robot.commands.Intake.IntakeCollectCmd;
 import frc.robot.commands.Intake.IntakeShooterCmd;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.Arm.ArmPidSubsystem;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -33,7 +35,8 @@ public class RobotContainer {
   private final SwerveSubsystem _drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"swerve"));
   
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final ArmSubsystem _armSubsystem = new ArmSubsystem();
+  //private final ArmSubsystem _armSubsystem = new ArmSubsystem();
+  private final ArmPidSubsystem _armPidSubsystem = new ArmPidSubsystem();
                                                                          
   private final XboxController _driverXbox = new XboxController(0);
   private final XboxController _armIntakeXbox = new XboxController(1);
@@ -47,7 +50,7 @@ public class RobotContainer {
   }
 
   private void configureArm(){
-    _armSubsystem.setDefaultCommand(new InstantCommand(() -> _armSubsystem.stopArm(), _armSubsystem));
+    //_armSubsystem.setDefaultCommand(new InstantCommand(() -> _armSubsystem.stopArm(), _armSubsystem));
   }
 
   private void configureSwerve(){
@@ -66,6 +69,7 @@ public class RobotContainer {
   private void configureBindings() {
     initializeIntakeXboxController();
     initializeArmXboxController();
+    initializeArmToPosition30XboxController();
   }
 
   private void initializeIntakeXboxController(){
@@ -77,8 +81,16 @@ public class RobotContainer {
   }
 
   private void initializeArmXboxController(){
-    JoystickButton armMoveUp = new JoystickButton(_armIntakeXbox,Button.kX.value);
-    armMoveUp.whileTrue(new ArmMoveManualUpCmd(_armSubsystem));
+    //JoystickButton armMoveUp = new JoystickButton(_armIntakeXbox,Button.kX.value);
+    //armMoveUp.whileTrue(new ArmMoveManualUpCmd(_armSubsystem));
+  }
+
+  private void initializeArmToPosition30XboxController(){
+    //JoystickButton armMoveArmToPosition = new JoystickButton(_armIntakeXbox,Button.kB.value);
+    //armMoveArmToPosition.onTrue(new ArmPositionCmd(_armSubsystem,30,0.6)
+    //.withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf));
+    JoystickButton armMoveArmToPosition = new JoystickButton(_armIntakeXbox,Button.kB.value);
+    armMoveArmToPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,5,1));
   }
 
   public Command getAutonomousCommand() {
