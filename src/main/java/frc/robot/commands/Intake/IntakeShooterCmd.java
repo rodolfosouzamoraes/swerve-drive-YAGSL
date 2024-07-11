@@ -29,6 +29,9 @@ public class IntakeShooterCmd extends Command {
   @Override
   public void execute() {
     _intakeSubsystem.shooterNote(1);
+    _timer.delay(0.75);
+    _intakeSubsystem.pushNote(0.3);
+    _timer.delay(0.5);
   }
 
   // Called once the command ends or is interrupted.

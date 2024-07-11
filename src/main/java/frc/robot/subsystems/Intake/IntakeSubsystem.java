@@ -76,16 +76,19 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void collectNote(double value){
+    if(getSensorCollect() == false){
+      leftMotorCollect.set(value);
+      rightMotorCollect.set(value);
+    }
+    else{
+       leftMotorCollect.set(0);
+       rightMotorCollect.set(0);
+    }
+  }
+
+  public void pushNote(double value){
     leftMotorCollect.set(value);
     rightMotorCollect.set(value);
-    //if(getSensorCollect() == false){
-      
-    //}
-    //else{
-    //  leftMotorCollect.set(0);
-    //  rightMotorCollect.set(0);
-    //}
-    
   }
 
   public void stopIntake(){
