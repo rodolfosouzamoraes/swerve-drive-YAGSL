@@ -72,6 +72,7 @@ public class ArmPidSubsystem extends PIDSubsystem {
 
   @Override
   public void useOutput(double output, double setpoint) {
+    setSetpoint(setpoint);
     leftMotorLeader.setVoltage(m_controller.calculate(getDistance(),setpoint)+_shooterFeedforward.calculate(setpoint));
     rightMotorLeader.setVoltage(m_controller.calculate(getDistance(),setpoint)+_shooterFeedforward.calculate(setpoint));  
   }
