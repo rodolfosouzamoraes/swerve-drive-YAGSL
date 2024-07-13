@@ -99,7 +99,7 @@ public class RobotContainer {
     armMoveArmTo5Position.onTrue(new ArmPositionCmd(_armPidSubsystem,5,1));
 
     JoystickButton armMoveArmTo30Position = new JoystickButton(_armIntakeXbox,Button.kY.value);
-    armMoveArmTo30Position.onTrue(new ArmPositionCmd(_armPidSubsystem,30,1));
+    armMoveArmTo30Position.onTrue(new ArmPositionCmd(_armPidSubsystem,36,1));
 
     JoystickButton armMoveToDownPosition = new JoystickButton(_armIntakeXbox,Button.kRightBumper.value);
     armMoveToDownPosition.onTrue(new InstantCommand(() -> _armPidSubsystem.stopFeeder(),_armPidSubsystem));
