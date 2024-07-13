@@ -70,9 +70,14 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Sensor Collect", sensorCollect.get());
   }
 
-  public void shooterNote(double value){
+  public void shooterNoteSpeaker(double value){
     leftMotorShooter.set(value);
     rightMotorShooter.set(value);
+  }
+
+  public void shooterNoteAmp(double value){
+    leftMotorShooter.set(value);
+    rightMotorShooter.set(0);
   }
 
   public void collectNote(double value){

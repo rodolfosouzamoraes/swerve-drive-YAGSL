@@ -25,6 +25,13 @@ public class IntakeShooterCmd extends Command {
     addRequirements(intakeSubsystem);
   }
 
+  public IntakeShooterCmd(IntakeSubsystem intakeSubsystem) {
+    _intakeSubsystem = intakeSubsystem;
+    _timer = new Timer();
+    _speedShooter = 1;
+    addRequirements(intakeSubsystem);
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -41,7 +48,12 @@ public class IntakeShooterCmd extends Command {
       _intakeSubsystem.stopIntake();
       return;
     }
-    _intakeSubsystem.shooterNote(_speedShooter);
+    if(_speedShooter<1){
+      _intakeSubsystem.shooterNoteAmp(_speedShooter);
+    }
+    else{
+      _intakeSubsystem.shooterNoteSpeaker(_speedShooter);
+    }    
     if(_timerShooter < _timer.get()){
       _intakeSubsystem.pushNote(0.3);
       if(_timerFinishShooter < _timer.get()){

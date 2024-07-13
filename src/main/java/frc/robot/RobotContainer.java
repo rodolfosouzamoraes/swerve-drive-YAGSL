@@ -74,7 +74,7 @@ public class RobotContainer {
 
   private void initializeIntakeXboxController(){
     Trigger shooterNote = new Trigger(() -> Math.abs(_armIntakeXbox.getRightTriggerAxis())>0.1);
-    shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem,1));
+    shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem));
 
     Trigger shooterAmp = new Trigger(() -> Math.abs(_armIntakeXbox.getLeftTriggerAxis())>0.1);
     shooterAmp.whileTrue(new IntakeShooterCmd(_intakeSubsystem,0.5));
