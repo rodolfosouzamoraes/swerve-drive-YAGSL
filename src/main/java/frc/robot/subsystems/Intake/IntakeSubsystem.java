@@ -77,7 +77,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void shooterNoteAmp(double value){
     leftMotorShooter.set(value);
-    rightMotorShooter.set(0);
+    rightMotorShooter.set(value);
+    leftMotorCollect.set(value);
+    rightMotorCollect.set(value);
   }
 
   public void collectNote(double value){

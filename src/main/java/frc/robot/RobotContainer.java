@@ -11,7 +11,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.StadiaController.Button;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -77,9 +77,9 @@ public class RobotContainer {
     shooterNote.whileTrue(new IntakeShooterCmd(_intakeSubsystem));
 
     Trigger shooterAmp = new Trigger(() -> Math.abs(_armIntakeXbox.getLeftTriggerAxis())>0.1);
-    shooterAmp.whileTrue(new IntakeShooterCmd(_intakeSubsystem,0.5));
+    shooterAmp.whileTrue(new IntakeShooterCmd(_intakeSubsystem,0.12));
 
-    JoystickButton collectNote = new JoystickButton(_armIntakeXbox,Button.kA.value);
+    JoystickButton collectNote = new JoystickButton(_armIntakeXbox,Button.kRightBumper.value);
     collectNote.whileTrue(new IntakeCollectCmd(_intakeSubsystem));
   }
 
@@ -89,20 +89,20 @@ public class RobotContainer {
   }
 
   private void initializeArmToPositionXboxController(){
-    //JoystickButton armMoveArmToPosition = new JoystickButton(_armIntakeXbox,Button.kB.value);
-    //armMoveArmToPosition.onTrue(new ArmPositionCmd(_armSubsystem,30,0.6)
-    //.withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf));
-    JoystickButton armMoveArmTo20Position = new JoystickButton(_armIntakeXbox,Button.kB.value);
-    armMoveArmTo20Position.onTrue(new ArmPositionCmd(_armPidSubsystem,15,1));
+    JoystickButton armMoveArmToSpeakerPosition = new JoystickButton(_armIntakeXbox,Button.kB.value);
+    armMoveArmToSpeakerPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,10.3,1));
 
-    JoystickButton armMoveArmTo5Position = new JoystickButton(_armIntakeXbox,Button.kX.value);
-    armMoveArmTo5Position.onTrue(new ArmPositionCmd(_armPidSubsystem,5,1));
+    JoystickButton armMoveArmToSpeakerDistancePosition = new JoystickButton(_armIntakeXbox,Button.kA.value);
+    armMoveArmToSpeakerPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,14.85,1));
 
-    JoystickButton armMoveArmTo30Position = new JoystickButton(_armIntakeXbox,Button.kY.value);
-    armMoveArmTo30Position.onTrue(new ArmPositionCmd(_armPidSubsystem,36,1));
+    JoystickButton armMoveArmToAmpPosition = new JoystickButton(_armIntakeXbox,Button.kY.value);
+    armMoveArmToAmpPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,40.3,1));
 
-    JoystickButton armMoveToDownPosition = new JoystickButton(_armIntakeXbox,Button.kRightBumper.value);
+    JoystickButton armMoveToDownPosition = new JoystickButton(_armIntakeXbox,Button.kLeftBumper.value);
     armMoveToDownPosition.onTrue(new InstantCommand(() -> _armPidSubsystem.stopFeeder(),_armPidSubsystem));
+
+    JoystickButton resetEncoderArm = new JoystickButton(_armIntakeXbox,Button.kX.value);
+    resetEncoderArm.onTrue(new InstantCommand(() -> _armPidSubsystem.resetEncoderArm(),_armPidSubsystem));
   }
 
   public Command getAutonomousCommand() {
