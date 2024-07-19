@@ -57,7 +57,7 @@ public class RobotContainer {
     Command baseDriveCommand = _drivebase.driveCommand(        
         () -> MathUtil.applyDeadband(_driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(_driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(_driverXbox.getRightX()*0.85*-1,.1));
+        () -> MathUtil.applyDeadband(_driverXbox.getRightX()*0.75*-1,.1));
 
     _drivebase.setDefaultCommand(baseDriveCommand);
   }
@@ -93,7 +93,7 @@ public class RobotContainer {
     armMoveArmToSpeakerPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,10.3,1));
 
     JoystickButton armMoveArmToSpeakerDistancePosition = new JoystickButton(_armIntakeXbox,Button.kA.value);
-    armMoveArmToSpeakerPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,14.85,1));
+    armMoveArmToSpeakerDistancePosition.onTrue(new ArmPositionCmd(_armPidSubsystem,14.85,1));
 
     JoystickButton armMoveArmToAmpPosition = new JoystickButton(_armIntakeXbox,Button.kY.value);
     armMoveArmToAmpPosition.onTrue(new ArmPositionCmd(_armPidSubsystem,40.3,1));
