@@ -12,6 +12,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,6 +28,7 @@ import frc.robot.commands.Intake.IntakeCollectCmd;
 import frc.robot.commands.Intake.IntakeShooterCmd;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
+import frc.robot.sequentials.SequentialSpeakerOneNote;
 import frc.robot.subsystems.Arm.ArmPidSubsystem;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
@@ -41,16 +44,22 @@ public class RobotContainer {
   private final XboxController _driverXbox = new XboxController(0);
   private final XboxController _armIntakeXbox = new XboxController(1);
 
+  private SendableChooser<Command> sendableChooserAutonomous;
+
   public RobotContainer() {
+    configureSendableChooser();
     configureBindings();
 
     configureSwerve();
     configureIntake();
-    configureArm();
+    
   }
 
-  private void configureArm(){
-    //_armSubsystem.setDefaultCommand(new InstantCommand(() -> _armSubsystem.stopArm(), _armSubsystem));
+  private void configureSendableChooser(){
+    sendableChooserAutonomous = new SendableChooser<>();
+    sendableChooserAutonomous.setDefaultOption("Default", null);
+    sendableChooserAutonomous.addOption("Uma Nota", new SequentialSpeakerOneNote(_intakeSubsystem, _armPidSubsystem));
+    SmartDashboard.putData(sendableChooserAutonomous);
   }
 
   private void configureSwerve(){
@@ -106,7 +115,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return sendableChooserAutonomous.getSelected();
   }
 
   public void setDriveMode() {
@@ -116,6 +125,7 @@ public class RobotContainer {
   public void setMotorBrake(boolean brake) {
     _drivebase.setMotorBrake(brake);
   }
+
 
   private void trashCode(){
     /*
