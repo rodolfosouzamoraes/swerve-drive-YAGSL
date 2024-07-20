@@ -58,7 +58,7 @@ public class RobotContainer {
   private void configureSendableChooser(){
     sendableChooserAutonomous = new SendableChooser<>();
     sendableChooserAutonomous.setDefaultOption("Default", null);
-    sendableChooserAutonomous.addOption("Uma Nota", new SequentialSpeakerOneNote(_intakeSubsystem, _armPidSubsystem));
+    sendableChooserAutonomous.addOption("Teste", new SequentialSpeakerOneNote(_intakeSubsystem, _armPidSubsystem, _drivebase));
     SmartDashboard.putData(sendableChooserAutonomous);
   }
 
