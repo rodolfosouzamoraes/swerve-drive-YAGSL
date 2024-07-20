@@ -6,23 +6,23 @@ package frc.robot.sequentials;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Auto.Auto_NoteMiddle;
-import frc.robot.commands.Auto.Auto_OneNoteCmd;
+import frc.robot.commands.Auto.Auto_ShooterNoteCmd;
 import frc.robot.subsystems.Arm.ArmPidSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import swervelib.SwerveDrive;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SequentialSpeakerOneNote extends SequentialCommandGroup {
+public class SequentialSpeakerMiddle extends SequentialCommandGroup {
   /** Creates a new SequentialSpeakerOneNote. */
-  public SequentialSpeakerOneNote(IntakeSubsystem intakeSubsystem, ArmPidSubsystem armPidSubsystem, SwerveSubsystem drivebase) {
+  public SequentialSpeakerMiddle(IntakeSubsystem intakeSubsystem, ArmPidSubsystem armPidSubsystem, SwerveSubsystem drivebase) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-    //new Auto_OneNoteCmd(armPidSubsystem,10.3,1,intakeSubsystem),
-    new Auto_NoteMiddle(drivebase)
+    new Auto_ShooterNoteCmd(armPidSubsystem,10.3,1,intakeSubsystem),
+    new Auto_NoteMiddle(drivebase, intakeSubsystem,1,0),
+    new Auto_ShooterNoteCmd(armPidSubsystem,10.3,1,intakeSubsystem)
     );
   }
 }

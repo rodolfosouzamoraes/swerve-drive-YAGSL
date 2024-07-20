@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm.ArmPidSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 
-public class Auto_OneNoteCmd extends Command {
+public class Auto_ShooterNoteCmd extends Command {
   // Arm Variáveis
   private final ArmPidSubsystem _armPidSubsystem;
   private final double _setPosition;
@@ -25,8 +25,10 @@ public class Auto_OneNoteCmd extends Command {
   private double _timerFinishShooter = 0;
   private double _timerWaitFinish = 0.75;
   private boolean _isShooter = false;
+
+  private boolean _isFinish = false;
   /** Creates a new ArmPositionCmd. */
-  public Auto_OneNoteCmd(ArmPidSubsystem armPidSubsystem, double setPoint, double maxOutPut, IntakeSubsystem intakeSubsystem) {
+  public Auto_ShooterNoteCmd(ArmPidSubsystem armPidSubsystem, double setPoint, double maxOutPut, IntakeSubsystem intakeSubsystem) {
     _armPidSubsystem = armPidSubsystem;
     _setPosition = setPoint;
     _maxOutput = maxOutPut;
@@ -45,6 +47,7 @@ public class Auto_OneNoteCmd extends Command {
     _timerShooter = _timer.get() + _timerWait;
     _timerFinishShooter = _timerShooter + _timerWaitFinish;
     _isShooter = false;
+    _isFinish = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -68,6 +71,7 @@ public class Auto_OneNoteCmd extends Command {
           _isShooter = true;
           _armPidSubsystem.stopFeeder();
           _intakeSubsystem.stopIntake();
+          _isFinish = true;
         }
       }
     }  
@@ -76,12 +80,11 @@ public class Auto_OneNoteCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _armPidSubsystem.stopFeeder();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _isFinish;
   }
 }

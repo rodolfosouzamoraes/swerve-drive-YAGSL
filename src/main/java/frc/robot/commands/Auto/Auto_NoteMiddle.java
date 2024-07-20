@@ -10,41 +10,52 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Auto_NoteMiddle extends Command {
+  // Swerve Variáveis
   private final SwerveSubsystem _drivebase;
-  private final Timer _timer;
-  private final double _timerMoveForward = 1;
   private final double _speed = 0.5;
-  /** Creates a new Auto_NoteMiddle. */
-  public Auto_NoteMiddle(SwerveSubsystem drivebase) {
-    _drivebase = drivebase;
-    _timer = new Timer();
+  private boolean _isFinish = false;
+  private double _poseX;
+  private double _poseY;
 
-    addRequirements(_drivebase);
-    // Use addRequirements() here to declare subsystem dependencies.
+  // Collect Variáveis
+  private final IntakeSubsystem _intakeSubsystem;
+  /** Creates a new Auto_NoteMiddle. */
+  public Auto_NoteMiddle(SwerveSubsystem drivebase, IntakeSubsystem intakeSubsystem, double poseX, double poseY) {
+    _drivebase = drivebase;
+    _intakeSubsystem = intakeSubsystem;
+    _poseX = poseX;
+    _poseY = poseY;
+
+    addRequirements(_drivebase,_intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _timer.restart();
+    _isFinish = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(_drivebase.getPose().getX()<= 1){
-      SmartDashboard.putNumber("Pose Swerve",_drivebase.getPose().getX());
-      _drivebase.drive(new Translation2d(1, 0),0,false);
+    SmartDashboard.putNumber("Pose Swerve",_drivebase.getPose().getX());
+    if(_intakeSubsystem.getSensorCollect() == false){
+      _drivebase.drive(new Translation2d(_poseX, _poseY),0,false);
     }
     else{
-      _drivebase.drive(new Translation2d(0, 0),0,false);
+      if(_drivebase.getPose().getX() >= 0){
+        _drivebase.drive(new Translation2d(-1, 0),0,false);
+      }
+      else{
+        _drivebase.drive(new Translation2d(0, 0),0,false);
+        _isFinish = true;
+      }      
     }
-  }
-
-  private void MoveY(double direction){
+    _intakeSubsystem.collectNote(0.3);
   }
 
   // Called once the command ends or is interrupted.
@@ -54,6 +65,6 @@ public class Auto_NoteMiddle extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _isFinish;
   }
 }
