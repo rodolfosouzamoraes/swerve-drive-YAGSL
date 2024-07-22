@@ -5,7 +5,7 @@
 package frc.robot.sequentials;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Auto.Auto_NoteMiddle;
+import frc.robot.commands.Auto.Auto_CollectNoteArena;
 import frc.robot.commands.Auto.Auto_ShooterNoteCmd;
 import frc.robot.subsystems.Arm.ArmPidSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
@@ -21,7 +21,7 @@ public class SequentialSpeakerMiddle extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
     new Auto_ShooterNoteCmd(armPidSubsystem,10.3,1,intakeSubsystem),
-    new Auto_NoteMiddle(drivebase, intakeSubsystem,1,0),
+    new Auto_CollectNoteArena(drivebase, intakeSubsystem,1,0,0),
     new Auto_ShooterNoteCmd(armPidSubsystem,10.3,1,intakeSubsystem)
     );
   }

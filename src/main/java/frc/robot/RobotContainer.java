@@ -28,6 +28,7 @@ import frc.robot.commands.Intake.IntakeCollectCmd;
 import frc.robot.commands.Intake.IntakeShooterCmd;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
+import frc.robot.sequentials.SequentialSkeakerRight;
 import frc.robot.sequentials.SequentialSpeakerMiddle;
 import frc.robot.subsystems.Arm.ArmPidSubsystem;
 import frc.robot.subsystems.Arm.ArmSubsystem;
@@ -58,7 +59,8 @@ public class RobotContainer {
   private void configureSendableChooser(){
     sendableChooserAutonomous = new SendableChooser<>();
     sendableChooserAutonomous.setDefaultOption("Default", null);
-    sendableChooserAutonomous.addOption("Teste", new SequentialSpeakerMiddle(_intakeSubsystem, _armPidSubsystem, _drivebase));
+    sendableChooserAutonomous.addOption("Speaker Middle", new SequentialSpeakerMiddle(_intakeSubsystem, _armPidSubsystem, _drivebase));
+    sendableChooserAutonomous.addOption("Speaker Right", new SequentialSkeakerRight(_intakeSubsystem, _armPidSubsystem, _drivebase));
     SmartDashboard.putData(sendableChooserAutonomous);
   }
 

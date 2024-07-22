@@ -14,7 +14,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -146,6 +148,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("PoseX Swerve",getPose().getX()*100);
+    SmartDashboard.putNumber("PoseY Swerve",getPose().getY()*100);
+    SmartDashboard.putNumber("RotationZ Swerve",getHeading().getRotations());
+    SmartDashboard.putNumber("Degrees Swerve",getHeading().getDegrees());
+    SmartDashboard.putNumber("Radians Swerve",getHeading().getRadians());
   }
 
   public SwerveDriveKinematics getKinematics() {
@@ -200,6 +207,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration() {
     return swerveDrive.swerveDriveConfiguration;
+  }
+
+  public void resetPose(){
+    swerveDrive.swerveDrivePoseEstimator.resetPosition(
+      swerveDrive.swerveDrivePoseEstimator.getEstimatedPosition().getRotation(),
+      swerveDrive.getModulePositions(),
+      new Pose2d(new Translation2d(0, 0),swerveDrive.swerveDrivePoseEstimator.getEstimatedPosition().getRotation()));
   }
 
 }

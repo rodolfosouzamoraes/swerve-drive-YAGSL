@@ -13,23 +13,26 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-public class Auto_NoteMiddle extends Command {
+public class Auto_CollectNoteArena extends Command {
   // Swerve Variáveis
   private final SwerveSubsystem _drivebase;
   private final double _speed = 0.5;
   private boolean _isFinish = false;
   private double _poseX;
   private double _poseY;
+  private double _rotation;
+  private double _poseXInitial;
+  private double _poseYInitial;
 
   // Collect Variáveis
   private final IntakeSubsystem _intakeSubsystem;
   /** Creates a new Auto_NoteMiddle. */
-  public Auto_NoteMiddle(SwerveSubsystem drivebase, IntakeSubsystem intakeSubsystem, double poseX, double poseY) {
+  public Auto_CollectNoteArena(SwerveSubsystem drivebase, IntakeSubsystem intakeSubsystem, double poseX, double poseY, double rotation) {
     _drivebase = drivebase;
     _intakeSubsystem = intakeSubsystem;
     _poseX = poseX;
     _poseY = poseY;
-
+    _rotation = rotation;
     addRequirements(_drivebase,_intakeSubsystem);
   }
 
@@ -37,18 +40,19 @@ public class Auto_NoteMiddle extends Command {
   @Override
   public void initialize() {
     _isFinish = false;
+    _poseXInitial = _drivebase.getPose().getX();
+    _poseYInitial = _drivebase.getPose().getY();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Pose Swerve",_drivebase.getPose().getX());
     if(_intakeSubsystem.getSensorCollect() == false){
-      _drivebase.drive(new Translation2d(_poseX, _poseY),0,false);
+      _drivebase.drive(new Translation2d(_poseX, _poseY),_rotation,false);
     }
     else{
-      if(_drivebase.getPose().getX() >= 0){
-        _drivebase.drive(new Translation2d(-1, 0),0,false);
+      if(_drivebase.getPose().getX() >= _poseXInitial){
+        _drivebase.drive(new Translation2d(_poseX*-1, _poseY*-1),_rotation,false);
       }
       else{
         _drivebase.drive(new Translation2d(0, 0),0,false);
